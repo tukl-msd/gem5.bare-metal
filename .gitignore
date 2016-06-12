@@ -1,1 +1,4 @@
 .DS_Store
+boot.o
+main.elf
+main.o
