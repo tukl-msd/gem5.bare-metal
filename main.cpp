@@ -32,19 +32,13 @@
  * Authors: Matthias Jung
  */
 
-volatile unsigned int * const UART0DR = (unsigned int *)0x10009000;
-
-void printf(const char *s) {
-     while(*s != '\0')
-     { 
-         *UART0DR = (unsigned int)(*s); 
-         s++; 
-     }
-}
+#include <stdio.h>
 
 int main(void)
 {
-    printf("Hello World!\n");
+    unsigned int r = 1337;
+
+    printf("Hello World! %d\n", r);
 
 	while (1)
 	{

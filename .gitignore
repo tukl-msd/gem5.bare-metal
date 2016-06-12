@@ -2,3 +2,5 @@
 boot.o
 main.elf
 main.o
+syscalls.o
+*.swp
