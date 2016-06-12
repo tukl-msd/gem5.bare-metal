@@ -2,7 +2,7 @@ gem5 ARM Bare-Metal Example
 ===========================
 
 This git repository shows a simple example for an ARM Bare-Metal implementation
-with gem5. It can be uses as an starting point for bare metal projects with
+with gem5. It can be used as a starting point for bare metal projects with
 this simulator. For more information on gem5 please look at:
 [gem5.org](http://www.gem5.org/Main_Page).
 
