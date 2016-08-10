@@ -12,6 +12,17 @@ To install the toolchain on Mac OSX you can yous macports:
     sudo port install arm-none-eabi-gcc
     sudo port install arm-none-eabi-gdb
 ```
+or Homebrew:
+``` bash
+    brew tap PX4/homebrew-px4
+    brew update
+    brew install gcc-arm-none-eabi
+```
+
+on Linux based systems (e.g. Debian):
+``` bash
+    apt-get install gcc-arm-none-eabi
+```
 
 To compile the example software set a proper path to you bare metal toolchain
 in the Makefile.

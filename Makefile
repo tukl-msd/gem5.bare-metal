@@ -30,7 +30,7 @@
 #
 # Authors: Matthias Jung
 
-CROSS_COMPILE_DIR = /opt/local/bin
+CROSS_COMPILE_DIR = /usr/local/bin
 
 ARCH          ?= arm
 CROSS_COMPILE ?= arm-none-eabi-
