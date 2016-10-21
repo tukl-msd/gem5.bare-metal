@@ -31,18 +31,25 @@
 # Authors: 	Matthias Jung
 #			Frederik Lauer
 
-include ../common/Makefile
+CROSS_COMPILE_DIR = /usr/local/bin
 
-OBJS         = boot.o ../common/syscalls.o main.o
+ARCH          ?= arm
+CROSS_COMPILE ?= arm-none-eabi-
 
-all: main.elf
+AS           = $(CROSS_COMPILE_DIR)/$(CROSS_COMPILE)as 
+LD           = $(CROSS_COMPILE_DIR)/$(CROSS_COMPILE)ld
+CC           = $(CROSS_COMPILE_DIR)/$(CROSS_COMPILE)gcc
+CXX          = $(CROSS_COMPILE_DIR)/$(CROSS_COMPILE)g++
+CPP          = $(CROSS_COMPILE_DIR)/$(CROSS_COMPILE)cpp
+AR           = $(CROSS_COMPILE_DIR)/$(CROSS_COMPILE)ar
+NM           = $(CROSS_COMPILE_DIR)/$(CROSS_COMPILE)nm
+STRIP        = $(CROSS_COMPILE_DIR)/$(CROSS_COMPILE)strip
+OBJCOPY      = $(CROSS_COMPILE_DIR)/$(CROSS_COMPILE)objcopy
+OBJDUMP      = $(CROSS_COMPILE_DIR)/$(CROSS_COMPILE)objdump
 
-main.elf: $(OBJS) $(LNK_SCRIPT) Makefile
-	$(CC) $(LNK_FILE_OPT) -o $@ $(OBJS) $(LNK_OPT)
-
-boot.o: Makefile
-	$(CPP) boot.s $(CFLAGS) | $(AS) $(ASFLAGS) -o boot.o
-
-clean: 
-	rm -f *.o *.elf 
-
+CFLAGS       = -g -O3 -lunistd -I .
+CXXFLAGS     = -g -O3 -lunistd -I . -fno-exceptions
+ASFLAGS      = -EL 
+LNK_OPT      = -nostartfiles
+LNK_SCRIPT   = boot.ld
+LNK_FILE_OPT = -nostartfiles -Xlinker -T$(LNK_SCRIPT)
