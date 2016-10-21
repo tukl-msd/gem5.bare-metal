@@ -53,7 +53,7 @@ ASFLAGS      = -EL
 LNK_OPT      = -nostartfiles
 LNK_SCRIPT   = boot.ld
 LNK_FILE_OPT = -nostartfiles -Xlinker -T$(LNK_SCRIPT)
-OBJS         = boot.o syscalls.o main.o
+OBJS         = boot.o ../syscalls.o main.o isr.o
 
 all: main.elf
 

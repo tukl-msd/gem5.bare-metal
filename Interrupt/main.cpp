@@ -34,7 +34,6 @@
  */
 
 #include <stdio.h>
-int irf(void); 
 
 int main(void)
 {
@@ -46,7 +45,7 @@ int main(void)
 
 
 	printf("##################################################\n");
-    printf("#################    NEUSTART   ##################\n");
+    printf("#################      Boot     ##################\n");
     printf("##################################################\n");
     printf("                                                  \n");
 
@@ -58,7 +57,7 @@ int main(void)
 			counter = 0; 
 			delay++;
 			if (delay == 5) {
-				printf("Starte Timer Interrupts                \n");
+				printf("Start Timer Interrupts                \n");
 				timer1[2] = 0xE0;	// Timer Start
 			}
 			printf("Delay: %u\n",delay);

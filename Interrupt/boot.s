@@ -70,14 +70,14 @@ _Reset:
 Reset_Handler:
 //////////////////////////////////////////////////////////////////////////////////////////////////
 /* Set up stack pointers for IRQ processor mode */
-mov R1, #0b11010010 				// interrupts masked, MODE = IRQ   IRQ | FIQ | 0 | Mode[4:0]
+mov R1, #0b11010010 					// interrupts masked, MODE = IRQ   IRQ | FIQ | 0 | Mode[4:0]
 msr CPSR, R1 						// change to IRQ mode
 ldr SP, =stack_base + Len_Stack + Len_IRQ_Stack		// set IRQ stack
 
 /* Change back to SVC (supervisor) mode with interrupts disabled */
-mov R1, #0b11010011 				// interrupts masked, MODE = SVC   IRQ | FIQ | 0 | Mode[4:0]
+mov R1, #0b11010011 					// interrupts masked, MODE = SVC   IRQ | FIQ | 0 | Mode[4:0]
 msr CPSR, R1 						// change to SVC mode
-ldr SP, =stack_base + Len_Stack		// set stack 
+ldr SP, =stack_base + Len_Stack				// set stack 
 
 // Enable individual interrupts, set target
 bl config_gic_dist
@@ -94,7 +94,7 @@ str r1, [r0]
 
 // Enable IRQ interrupts in the processor:
 mov R1, #0b01010011 				// IRQ not masked (=0), MODE = SVC   IRQ | FIQ | 0 | Mode[4:0]
-msr CPSR, R1 						// 
+msr CPSR, R1 					// 
 
 bl main
 B .
@@ -171,7 +171,7 @@ irq_unexpected:
 	bne	irq_unexpected	// if irq is not from timer0 
 
 	// Jump to C - must clear the timer interrupt! 
-	BL ISR
+	BL isr
 
 	// write the IRQ ID to the END_OF_INTERRUPT Register of GIC_CPU_INTERFACE
 	ldr r1, =GIC_CPU_BASE + GIC_CPU_End_of_int_offset
