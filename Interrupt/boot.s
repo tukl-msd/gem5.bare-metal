@@ -70,14 +70,14 @@ _Reset:
 .global Reset_Handler
 Reset_Handler:
     // Set up stack pointers for IRQ processor mode 
-    mov R1, #0b11010010                 // interrupts masked, MODE = IRQ   IRQ | FIQ | 0 | Mode[4:0]
-    msr CPSR, R1                        // change to IRQ mode
-    ldr SP, =stack_base + Len_Stack + Len_IRQ_Stack         // set IRQ stack
+    mov R1, #0b11010010 // interrupts masked, MODE = IRQ   IRQ | FIQ | 0 | Mode[4:0]
+    msr CPSR, R1    // change to IRQ mode
+    ldr SP, =stack_base + Len_Stack + Len_IRQ_Stack // set IRQ stack
 
     // Change back to SVC (supervisor) mode with interrupts disabled
-    mov R1, #0b11010011                 // interrupts masked, MODE = SVC   IRQ | FIQ | 0 | Mode[4:0]
-    msr CPSR, R1                        // change to SVC mode
-    ldr SP, =stack_base + Len_Stack     // set stack
+    mov R1, #0b11010011 // interrupts masked, MODE = SVC   IRQ | FIQ | 0 | Mode[4:0]
+    msr CPSR, R1    // change to SVC mode
+    ldr SP, =stack_base + Len_Stack // set stack
 
     // Enable individual interrupts, set target
     bl config_gic_dist
@@ -91,7 +91,7 @@ Reset_Handler:
     str r1, [r0]
 
     // Enable IRQ interrupts in the processor:
-    mov R1, #0b01010011                 // IRQ not masked (=0), MODE = SVC   IRQ | FIQ | 0 | Mode[4:0]
+    mov R1, #0b01010011 // IRQ not masked (=0), MODE = SVC   IRQ | FIQ | 0 | Mode[4:0]
     msr CPSR, R1
 
     bl main
@@ -102,31 +102,30 @@ Reset_Handler:
 config_gic_dist:
     push {lr}
     /* Enable the Interrupt in the Set-Enable Register of the GIC Distributor
-        Set-enable1 Reg Offset Address = 0x104
-            Bits 0 to 31 correspond to interrupt input lines 32 to 63 respectively.
-            A bit set to 1 indicates an enabled interrupt.
-        Set-enable2 Reg Offset Address = 0x108
-            Bits 0 to 31 correspond to interrupt input lines 64 to 95 respectively.
-            A bit set to 1 indicates an enabled interrupt.
-    This Example: Interrupt of timer0 => IRQ ID = 36
-    */
+     *  Set-enable1 Reg Offset Address = 0x104
+     *      Bits 0 to 31 correspond to interrupt input lines 32 to 63 respectively.
+     *      A bit set to 1 indicates an enabled interrupt.
+     *  Set-enable2 Reg Offset Address = 0x108
+     *      Bits 0 to 31 correspond to interrupt input lines 64 to 95 respectively.
+     *      A bit set to 1 indicates an enabled interrupt.
+     *  This Example: Interrupt of timer0 => IRQ ID = 36
+     */
 
-    ldr r1, =GIC_Dist_Base + set_enable1        // r1 = Set-enable1 Reg Address
+    ldr r1, =GIC_Dist_Base + set_enable1    // r1 = Set-enable1 Reg Address
     mov r2, #1
     //IRQ ID - 32 => 5th bit = 1
     lsl r2, r2, #4
 
-    ldr r3, [r1]         // read current register value
-    orr r3, r3, r2       // set the enable bit
-    str r3, [r1]         // store the new register value
+    ldr r3, [r1]    // read current register value
+    orr r3, r3, r2  // set the enable bit
+    str r3, [r1]    // store the new register value
 
     /* Configure Interrupt Processor Taget
-    Reg offset  0x820     for ID32 − ID35
-                0x824     for ID36 − ID39
-                ...
-    default values are 0x01010101 => CPU0 is target for all.
-    */
-
+     * Reg offset  0x820     for ID32 − ID35
+     *             0x824     for ID36 − ID39
+     *             ...
+     * default values are 0x01010101 => CPU0 is target for all.
+     */
     pop {pc}
 
 
@@ -157,7 +156,7 @@ irq_handler:
 
 irq_unexpected:
     cmp r2, #timer_irq_id
-    bne    irq_unexpected    // if irq is not from timer0
+    bne irq_unexpected  // if irq is not from timer0
 
     // Jump to C - must clear the timer interrupt!
     BL isr
