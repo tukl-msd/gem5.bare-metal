@@ -46,17 +46,16 @@ _Reset:
     B .                /* FIQ */
 
 
-.equ Len_Stack,        0x1000;  // 4kB of stack memory 
-.equ Len_IRQ_Stack,    0x1000;  // 4kB of stack memory for IRQ Mode 
+.equ Len_Stack,        0x1000;  /* 4kB of stack memory */
+.equ Len_IRQ_Stack,    0x1000;  /* 4kB of stack memory for IRQ Mode*/
 //.equ stack_base,      0x18000   // stack_base defined in Linker Script
+
 
 //GIC_Distributor
 .equ GIC_Dist_Base,     0x1f001000
-
 //Register offsets
 .equ set_enable1,       0x104
 .equ set_enable2,       0x108
-
 //Example definitions
 .equ timer_irq_id,      36   // 36 <64 => set_enable1 Reg
 
@@ -69,37 +68,42 @@ _Reset:
 
 .global Reset_Handler
 Reset_Handler:
-    // Set up stack pointers for IRQ processor mode 
-    mov R1, #0b11010010                 // interrupts masked, MODE = IRQ   IRQ | FIQ | 0 | Mode[4:0]
-    msr CPSR, R1                        // change to IRQ mode
-    ldr SP, =stack_base + Len_Stack + Len_IRQ_Stack         // set IRQ stack
+//////////////////////////////////////////////////////////////////////////////////////////////////
+/* Set up stack pointers for IRQ processor mode */
+mov R1, #0b11010010                 // interrupts masked, MODE = IRQ   IRQ | FIQ | 0 | Mode[4:0]
+msr CPSR, R1                        // change to IRQ mode
+ldr SP, =stack_base + Len_Stack + Len_IRQ_Stack         // set IRQ stack
 
-    // Change back to SVC (supervisor) mode with interrupts disabled
-    mov R1, #0b11010011                 // interrupts masked, MODE = SVC   IRQ | FIQ | 0 | Mode[4:0]
-    msr CPSR, R1                        // change to SVC mode
-    ldr SP, =stack_base + Len_Stack     // set stack
+/* Change back to SVC (supervisor) mode with interrupts disabled */
+mov R1, #0b11010011                 // interrupts masked, MODE = SVC   IRQ | FIQ | 0 | Mode[4:0]
+msr CPSR, R1                        // change to SVC mode
+ldr SP, =stack_base + Len_Stack     // set stack
 
-    // Enable individual interrupts, set target
-    bl config_gic_dist
+// Enable individual interrupts, set target
+bl config_gic_dist
 
-    // Enable individual interrupts, set target
-    bl config_gic_cpu_interface
+// Enable individual interrupts, set target
+bl config_gic_cpu_interface
 
-    // Enable interrupts in GIC Distributor
-    ldr r0, =GIC_Dist_Base
-    mov r1, #1
-    str r1, [r0]
+// Enable interrupts in GIC Distributor
+ldr r0, =GIC_Dist_Base
+mov r1, #1
+str r1, [r0]
 
-    // Enable IRQ interrupts in the processor:
-    mov R1, #0b01010011                 // IRQ not masked (=0), MODE = SVC   IRQ | FIQ | 0 | Mode[4:0]
-    msr CPSR, R1
 
-    bl main
-    B .
+
+// Enable IRQ interrupts in the processor:
+mov R1, #0b01010011                 // IRQ not masked (=0), MODE = SVC   IRQ | FIQ | 0 | Mode[4:0]
+msr CPSR, R1
+
+bl main
+B .
+//////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 .global config_gic_dist
 config_gic_dist:
+//////////////////////////////////////////////////////////////////////////////////////////////////
     push {lr}
     /* Enable the Interrupt in the Set-Enable Register of the GIC Distributor
         Set-enable1 Reg Offset Address = 0x104
@@ -116,22 +120,25 @@ config_gic_dist:
     //IRQ ID - 32 => 5th bit = 1
     lsl r2, r2, #4
 
-    ldr r3, [r1]         // read current register value
-    orr r3, r3, r2       // set the enable bit
-    str r3, [r1]         // store the new register value
+    ldr r3, [r1]        // read current register value
+    orr r3, r3, r2        // set the enable bit
+    str r3, [r1]        // store the new register value
 
     /* Configure Interrupt Processor Taget
-    Reg offset  0x820     for ID32 − ID35
+    Reg offset     0x820     for ID32 − ID35
                 0x824     for ID36 − ID39
                 ...
+
     default values are 0x01010101 => CPU0 is target for all.
     */
 
     pop {pc}
+//////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 .global config_gic_cpu_interface
 config_gic_cpu_interface:
+//////////////////////////////////////////////////////////////////////////////////////////////////
     push {lr}
 
     // set Interrupt Priority mask (enable all priority levels)
@@ -142,22 +149,25 @@ config_gic_cpu_interface:
     // set the enable bit in the GIC_CPU_INTERFACE
     mov r2, #1
     ldr r1, =GIC_CPU_BASE
-    str r2, [r1]
-    pop {pc}
+str r2, [r1]
+
+pop {pc}
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 
 // IRQ Handler that calls the ISR function in C
 .global irq_handler
 irq_handler:
-    push {r0-r7,lr}
+//////////////////////////////////////////////////////////////////////////////////////////////////
+push {r0-r7,lr}
 
-    // Read the interrupt acknowledge register of the GIC_CPU_INTERFACE
-    ldr r1, =GIC_CPU_BASE + GIC_CPU_Int_Ack_reg_offset
-    ldr r2, [r1]
+// Read the interrupt acknowledge register of the GIC_CPU_INTERFACE
+ldr r1, =GIC_CPU_BASE + GIC_CPU_Int_Ack_reg_offset
+ldr r2, [r1]
 
-irq_unexpected:
-    cmp r2, #timer_irq_id
-    bne    irq_unexpected    // if irq is not from timer0
+irq_ucmp r2, #timer_irq_id
+bne    irq_unexpected    // if irq is not from timer0
 
     // Jump to C - must clear the timer interrupt!
     BL isr
@@ -169,3 +179,4 @@ irq_unexpected:
 
     pop {r0-r7,lr}
     subs pc, lr, #4
+//////////////////////////////////////////////////////////////////////////////////////////////////

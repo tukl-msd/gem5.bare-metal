@@ -30,7 +30,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * Authors: Matthias Jung
- 			Frederik Lauer
+            Frederik Lauer
  */
 
 #include <stdio.h>
@@ -38,32 +38,27 @@
 int main(void)
 {
     unsigned int delay = 0;
-    unsigned int counter = 0; 
+    unsigned int counter = 0;
 
-    // Timer Base Address
-    int *timer1 = (int*)0x10011000; 
-
-
-	printf("##################################################\n");
+    int *timer1 = (int*)0x10011000; // Timer Base Address
+    *timer1 = 0x1000; // Timer StartValue
+    
+    printf("##################################################\n");
     printf("#################      Boot     ##################\n");
     printf("##################################################\n");
     printf("                                                  \n");
 
-    *timer1 = 0x1000; // Timer StartValue
-
-	while (1)
-	{
-		if (counter > 300000){
-			counter = 0; 
-			delay++;
-			if (delay == 5) {
-				printf("Start Timer Interrupts                \n");
-				timer1[2] = 0xE0;	// Timer Start
-			}
-			printf("Delay: %u\n",delay);
-		}
-		else {
-			counter++;
-		}
-	}
+    while (1) {
+        if (counter > 300000) {
+            counter = 0;
+            delay++;
+            if (delay == 5) {
+                printf("Start Timer Interrupts\n");
+                timer1[2] = 0xE0;   // Timer Start
+            }
+            printf("Delay: %u\n",delay);
+        } else {
+            counter++;
+        }
+    }
 }
