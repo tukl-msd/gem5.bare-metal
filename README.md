@@ -31,18 +31,30 @@ in the Makefile.
     make
 ```
 
-To run the software in gem5 do the following steps: 
+To run the software in gem5 do the following steps:
 
 ``` bash
     export M5_PATH="/path/to/gem5.bare-metal/"
 ```   
-
+For the simple example:
 ``` bash
     ./build/ARM/gem5.opt \
     ./configs/example/fs.py \
     --bare-metal \
-    --disk-image=/path/to/gem5.bare-metal/fake.iso \
-    --kernel=/path/to/gem5.bare-metal/main.elf \
+    --disk-image=/path/to/gem5.bare-metal/common/fake.iso \
+    --kernel=/path/to/gem5.bare-metal/simple/main.elf \
+    --machine-type=RealView_PBX \
+    --dtb-filename=none \
+    --mem-size=256MB
+```
+
+For the interrupt example:
+``` bash
+    ./build/ARM/gem5.opt \
+    ./configs/example/fs.py \
+    --bare-metal \
+    --disk-image=/path/to/gem5.bare-metal/common/fake.iso \
+    --kernel=/path/to/gem5.bare-metal/interrupt/main.elf \
     --machine-type=RealView_PBX \
     --dtb-filename=none \
     --mem-size=256MB

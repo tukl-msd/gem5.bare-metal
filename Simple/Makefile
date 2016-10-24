@@ -28,31 +28,12 @@
 # NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
-# Authors: Matthias Jung
+# Authors: 	Matthias Jung
+#			Frederik Lauer
 
-CROSS_COMPILE_DIR = /usr/local/bin
+include ../common/Makefile
 
-ARCH          ?= arm
-CROSS_COMPILE ?= arm-none-eabi-
-
-AS           = $(CROSS_COMPILE_DIR)/$(CROSS_COMPILE)as 
-LD           = $(CROSS_COMPILE_DIR)/$(CROSS_COMPILE)ld
-CC           = $(CROSS_COMPILE_DIR)/$(CROSS_COMPILE)gcc
-CXX          = $(CROSS_COMPILE_DIR)/$(CROSS_COMPILE)g++
-CPP          = $(CROSS_COMPILE_DIR)/$(CROSS_COMPILE)cpp
-AR           = $(CROSS_COMPILE_DIR)/$(CROSS_COMPILE)ar
-NM           = $(CROSS_COMPILE_DIR)/$(CROSS_COMPILE)nm
-STRIP        = $(CROSS_COMPILE_DIR)/$(CROSS_COMPILE)strip
-OBJCOPY      = $(CROSS_COMPILE_DIR)/$(CROSS_COMPILE)objcopy
-OBJDUMP      = $(CROSS_COMPILE_DIR)/$(CROSS_COMPILE)objdump
-
-CFLAGS       = -g -O3 -lunistd -I .
-CXXFLAGS     = -g -O3 -lunistd -I . -fno-exceptions
-ASFLAGS      = -EL 
-LNK_OPT      = -nostartfiles
-LNK_SCRIPT   = boot.ld
-LNK_FILE_OPT = -nostartfiles -Xlinker -T$(LNK_SCRIPT)
-OBJS         = boot.o syscalls.o main.o
+OBJS         = boot.o ../common/syscalls.o main.o
 
 all: main.elf
 
@@ -64,3 +45,4 @@ boot.o: Makefile
 
 clean: 
 	rm -f *.o *.elf 
+
