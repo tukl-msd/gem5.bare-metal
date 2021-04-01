@@ -34,31 +34,20 @@ in the Makefile.
 To run the software in gem5 do the following steps:
 
 ``` bash
-    export M5_PATH="/path/to/gem5.bare-metal/"
-```   
-For the simple example:
-``` bash
-    ./build/ARM/gem5.opt \
-    ./configs/example/fs.py \
-    --bare-metal \
-    --disk-image=/path/to/gem5.bare-metal/common/fake.iso \
-    --kernel=/path/to/gem5.bare-metal/simple/main.elf \
-    --machine-type=RealView_PBX \
-    --dtb-filename=none \
-    --mem-size=256MB
-```
+    export GEM5_PATH="/path/to/gem5/repository/"
+    export TEST_BIN_PATH="/path/to/gem5.bare-metal/"
 
-For the interrupt example:
-``` bash
-    ./build/ARM/gem5.opt \
-    ./configs/example/fs.py \
+    ${GEM5_PATH}/build/ARM/gem5.opt \
+    ${GEM5_PATH}/configs/example/fs.py \
     --bare-metal \
-    --disk-image=/path/to/gem5.bare-metal/common/fake.iso \
-    --kernel=/path/to/gem5.bare-metal/interrupt/main.elf \
-    --machine-type=RealView_PBX \
-    --dtb-filename=none \
+    --kernel=${TEST_BIN_PATH}/simple/main.elf \
+    --machine-type=VExpress_GEM5_V1 \
     --mem-size=256MB
 ```
+*Note: tested with gem5 v20.1.0.4
+
+For the interrupt example, just adjust the "--kernel" argument to point to the corresponding .elf file. 
+
 
 Licence
 =======

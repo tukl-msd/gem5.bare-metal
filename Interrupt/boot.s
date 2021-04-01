@@ -64,7 +64,11 @@ _Reset:
 .equ set_enable2,       0x108
 
 //Example definitions
+#if GEM5_MACHINETYPE == VExpress_GEM5_V1
+.equ timer_irq_id,      57   // 57 <64 => set_enable1 Reg
+#else
 .equ timer_irq_id,      36   // 36 <64 => set_enable1 Reg
+#endif
 
 .equ GIC_CPU_mask_reg_offset,       0x04
 .equ GIC_CPU_Int_Ack_reg_offset,    0x0C
@@ -117,8 +121,13 @@ config_gic_dist:
 
     ldr r1, =GIC_Dist_Base + set_enable1    // r1 = Set-enable1 Reg Address
     mov r2, #1
-    //IRQ ID - 32 => 5th bit = 1
+#if GEM5_MACHINETYPE == VExpress_GEM5_V1
+    //IRQ ID(57) - 32 = 25
+    lsl r2, r2, #25
+#else
+    //IRQ ID(36) - 32 = 4
     lsl r2, r2, #4
+#endif
 
     ldr r3, [r1]    // read current register value
     orr r3, r3, r2  // set the enable bit
