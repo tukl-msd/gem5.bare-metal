@@ -47,7 +47,7 @@ STRIP        = $(CROSS_COMPILE_DIR)/$(CROSS_COMPILE)strip
 OBJCOPY      = $(CROSS_COMPILE_DIR)/$(CROSS_COMPILE)objcopy
 OBJDUMP      = $(CROSS_COMPILE_DIR)/$(CROSS_COMPILE)objdump
 
-CFLAGS       = -g -O3 -lunistd -I .
+CFLAGS       = -g -O3 -lunistd -I . -DGEM5_MACHINE_TYPE=VExpress_GEM5_V1
 CXXFLAGS     = -g -O3 -lunistd -I . -fno-exceptions
 ASFLAGS      = -EL 
 LNK_OPT      = --specs=nosys.specs

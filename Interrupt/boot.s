@@ -51,7 +51,13 @@ _Reset:
 //.equ stack_base,      0x18000   // stack_base defined in Linker Script
 
 //GIC_Distributor
+#if GEM5_MACHINETYPE == VExpress_GEM5_V1
+.equ GIC_Dist_Base,     0x2c001000
+.equ GIC_CPU_BASE,      0x2c002000
+#else
 .equ GIC_Dist_Base,     0x1f001000
+.equ GIC_CPU_BASE,      0x1f000100
+#endif
 
 //Register offsets
 .equ set_enable1,       0x104
@@ -60,8 +66,6 @@ _Reset:
 //Example definitions
 .equ timer_irq_id,      36   // 36 <64 => set_enable1 Reg
 
-//GIC_CPU_INTERFACE
-.equ GIC_CPU_BASE,                  0x1f000100
 .equ GIC_CPU_mask_reg_offset,       0x04
 .equ GIC_CPU_Int_Ack_reg_offset,    0x0C
 .equ GIC_CPU_End_of_int_offset,     0x10

@@ -27,7 +27,11 @@ int _lseek_r (struct _reent *r, int file, int ptr, int dir)
 
 // The following two functions implement the basis for printf and the UART
 // component in gem5.
+#if GEM5_MACHINETYPE == VExpress_GEM5_V1
+volatile unsigned int *const UART0DR = (unsigned int *)0x1c090000;
+#else
 volatile unsigned int * const UART0DR = (unsigned int *)0x10009000;
+#endif
 
 void gem5_print(const char *s) {
     while(*s != '\0')
