@@ -46,8 +46,7 @@ To run the software in gem5 do the following steps:
 ```
 *Note: tested with gem5 v20.1.0.4
 
-For the interrupt example, just adjust the "--kernel" argument to point to the corresponding .elf file. 
-
+TODO: Fix the interrupt example.
 
 Licence
 =======
