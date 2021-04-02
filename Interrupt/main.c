@@ -46,7 +46,7 @@ int main(void)
     unsigned int delay = 0;
     unsigned int counter = 0;
 
-#if GEM5_MACHINETYPE == VExpress_GEM5_V1
+#if GEM5_MACHINETYPE_VExpress_GEM5_V1
     int *timer1 = (int*)0x2a820000;
 #else
     int *timer1 = (int*)0x10011000; // Timer Base Address

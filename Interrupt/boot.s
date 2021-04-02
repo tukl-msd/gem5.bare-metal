@@ -51,7 +51,7 @@ _Reset:
 //.equ stack_base,      0x18000   // stack_base defined in Linker Script
 
 //GIC_Distributor
-#if GEM5_MACHINETYPE == VExpress_GEM5_V1
+#if GEM5_MACHINETYPE_VExpress_GEM5_V1
 .equ GIC_Dist_Base,     0x2c001000
 .equ GIC_CPU_BASE,      0x2c002000
 #else
@@ -64,7 +64,7 @@ _Reset:
 .equ set_enable2,       0x108
 
 //Example definitions
-#if GEM5_MACHINETYPE == VExpress_GEM5_V1
+#if GEM5_MACHINETYPE_VExpress_GEM5_V1
 .equ timer_irq_id,      57   // 57 <64 => set_enable1 Reg
 #else
 .equ timer_irq_id,      36   // 36 <64 => set_enable1 Reg
@@ -121,7 +121,7 @@ config_gic_dist:
 
     ldr r1, =GIC_Dist_Base + set_enable1    // r1 = Set-enable1 Reg Address
     mov r2, #1
-#if GEM5_MACHINETYPE == VExpress_GEM5_V1
+#if GEM5_MACHINETYPE_VExpress_GEM5_V1
     //IRQ ID(57) - 32 = 25
     lsl r2, r2, #25
 #else
