@@ -35,6 +35,8 @@ CROSS_COMPILE_DIR = /usr/bin
 
 ARCH          ?= arm
 CROSS_COMPILE ?= arm-none-eabi-
+MACHINE_TYPE  ?= GEM5_MACHINETYPE_VExpress_GEM5_V1
+#MACHINE_TYPE ?= GEM5_MACHINETYPE_VExpress_EMM
 
 AS           = $(CROSS_COMPILE_DIR)/$(CROSS_COMPILE)as 
 LD           = $(CROSS_COMPILE_DIR)/$(CROSS_COMPILE)ld
@@ -47,9 +49,8 @@ STRIP        = $(CROSS_COMPILE_DIR)/$(CROSS_COMPILE)strip
 OBJCOPY      = $(CROSS_COMPILE_DIR)/$(CROSS_COMPILE)objcopy
 OBJDUMP      = $(CROSS_COMPILE_DIR)/$(CROSS_COMPILE)objdump
 
-#CFLAGS       = -g -O3 -lunistd -I . -DGEM5_MACHINETYPE_VExpress_GEM5_V1
-CFLAGS       = -g -O3 -lunistd -I . -DGEM5_MACHINETYPE_VExpress_EMM
-CXXFLAGS     = -g -O3 -lunistd -I . -fno-exceptions -DGEM5_MACHINETYPE_VExpress_EMM
+CFLAGS       = -g -O3 -lunistd -I . -D${MACHINE_TYPE}
+CXXFLAGS     = -g -O3 -lunistd -I . -fno-exceptions -D${MACHINE_TYPE}
 ASFLAGS      = -EL 
 LNK_OPT      = --specs=nosys.specs
 LNK_SCRIPT   = boot.ld
