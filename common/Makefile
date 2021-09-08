@@ -47,8 +47,8 @@ STRIP        = $(CROSS_COMPILE_DIR)/$(CROSS_COMPILE)strip
 OBJCOPY      = $(CROSS_COMPILE_DIR)/$(CROSS_COMPILE)objcopy
 OBJDUMP      = $(CROSS_COMPILE_DIR)/$(CROSS_COMPILE)objdump
 
-CFLAGS       = -g -O3 -lunistd -I . -D${MACHINE_TYPE}
-CXXFLAGS     = -g -O3 -lunistd -I . -fno-exceptions -D${MACHINE_TYPE}
+CFLAGS       = -g -O3 -lunistd -I .
+CXXFLAGS     = -g -O3 -lunistd -I . -fno-exceptions
 ASFLAGS      = -EL 
 LNK_OPT      = --specs=nosys.specs
 LNK_SCRIPT   = boot.ld

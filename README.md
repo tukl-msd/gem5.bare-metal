@@ -42,8 +42,7 @@ To run the software in gem5 do the following steps:
     ${GEM5_PATH}/configs/example/fs.py \
     --bare-metal \
     --kernel=${TEST_BIN_PATH}/Simple/main.elf \
-    --machine-type=VExpress_GEM5_V1 \
-    --mem-size=256MB
+    --machine-type=VExpress_GEM5_V1
 ```
 
 *Note1: To build and run the interrupt example, simply repeat the steps above replacing "Simple" by "Interrupt".
