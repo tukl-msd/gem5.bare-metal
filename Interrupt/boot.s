@@ -50,7 +50,7 @@ _Reset:
 .equ Len_IRQ_Stack,    0x1000;  // 4kB of stack memory for IRQ Mode 
 //.equ stack_base,      0x18000   // stack_base defined in Linker Script
 
-//GIC_Distributor
+//GIC Distributor & CPU interface
 //GEM5_MACHINETYPE=VExpress_GEM5_V1
 .equ GIC_Dist_Base,     0x2c001000
 .equ GIC_CPU_BASE,      0x2c002000

@@ -65,7 +65,7 @@ int main(void)
             delay++;
             if (delay == 5) {
                 printf("Start Timer Interrupts\n");
-                timer1[CNTP_CTL] = 0x01;   // Timer Start
+                timer1[CNTP_CTL] = 0x01;   // start timer
                 delay = 1;
             }
             printf("Delay: %u\n",delay);
