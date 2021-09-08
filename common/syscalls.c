@@ -4,62 +4,42 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 
-int _read_r (struct _reent *r, int file, char * ptr, int len)
-{
-    r = r;
-    file = file;
-    ptr = ptr;
-    len = len;
+#define UNUSED __attribute__((unused))
 
-    errno = EINVAL;
-    return -1;
-}
-
-int _lseek_r (struct _reent *r, int file, int ptr, int dir)
-{
-    r = r;
-    file = file;
-    ptr = ptr;
-    dir = dir;
-
-    return 0;
-}
-
-// The following two functions implement the basis for printf and the UART
-// component in gem5.
 #if GEM5_MACHINETYPE_VExpress_GEM5_V1
 volatile unsigned int *const UART0DR = (unsigned int *)0x1c090000;
 #else
 volatile unsigned int * const UART0DR = (unsigned int *)0x10009000;
 #endif
 
-void gem5_print(const char *s) {
-    while(*s != '\0')
-    { 
-        *UART0DR = (unsigned int)(*s); 
-        s++; 
-    }
+register char *stack_ptr __asm ("sp");
+
+int _read_r(UNUSED struct _reent *r, UNUSED int file, UNUSED char *ptr, UNUSED int len)
+{
+    errno = EINVAL;
+    return -1;
 }
 
-int _write_r (struct _reent *r, int file, char * ptr, int len)
-{  
-    r = r;
-    file = file;
-    ptr = ptr;
-
-    gem5_print(ptr);
-
-    return len;
-}
-
-int _close_r (struct _reent *r, int file)
+int _lseek_r(UNUSED struct _reent *r, UNUSED int file, UNUSED int ptr, UNUSED int dir)
 {
     return 0;
 }
 
-register char * stack_ptr __asm ("sp");
+int _write_r(UNUSED struct _reent *r, UNUSED int file, char *ptr, int len)
+{
+    int cnt;
+    for (cnt = 0; cnt < len; cnt++) {
+        *UART0DR = *ptr++;
+    }
+    return len;
+}
 
-caddr_t _sbrk_r (struct _reent *r, int incr)
+int _close_r(struct _reent *r, int file)
+{
+    return 0;
+}
+
+caddr_t _sbrk_r(struct _reent *r, int incr)
 {
     extern char   end __asm ("end"); 
     static char * heap_end;
@@ -80,19 +60,15 @@ caddr_t _sbrk_r (struct _reent *r, int incr)
     return (caddr_t) prev_heap_end;
 }
 
-int _fstat_r (struct _reent *r, int file, struct stat * st)
+int _fstat_r(UNUSED struct _reent *r, UNUSED int file, struct stat *st)
 {
-    r = r; 
-    file = file;
-    memset (st, 0, sizeof (* st));
+    memset(st, 0, sizeof (*st));
     st->st_mode = S_IFCHR;
     return 0;
 }
 
-int _isatty_r(struct _reent *r, int fd)
+int _isatty_r(UNUSED struct _reent *r, UNUSED int fd)
 {
-    r = r;
-    fd = fd;
     return 1;
 }
 
