@@ -19,13 +19,13 @@ or Homebrew:
     brew install gcc-arm-none-eabi
 ```
 
-on Linux based systems (e.g. Debian):
+on Linux based systems (e.g. Ubuntu/Debian):
 ``` bash
     apt-get install gcc-arm-none-eabi
 ```
 
 To compile the example software set a proper path to you bare metal toolchain
-in the Makefile.
+in common/Makefile, then run:
 
 ``` bash
     cd Simple
