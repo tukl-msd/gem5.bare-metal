@@ -6,11 +6,8 @@
 
 #define UNUSED __attribute__((unused))
 
-#if GEM5_MACHINETYPE_VExpress_GEM5_V1
+//GEM5_MACHINETYPE=VExpress_GEM5_V1
 volatile unsigned int *const UART0DR = (unsigned int *)0x1c090000;
-#else
-volatile unsigned int * const UART0DR = (unsigned int *)0x10009000;
-#endif
 
 register char *stack_ptr __asm ("sp");
 

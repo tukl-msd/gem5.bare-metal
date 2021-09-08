@@ -35,7 +35,6 @@ CROSS_COMPILE_DIR = /usr/bin
 
 ARCH          ?= arm
 CROSS_COMPILE ?= arm-none-eabi-
-MACHINE_TYPE  ?= GEM5_MACHINETYPE_VExpress_GEM5_V1
 
 AS           = $(CROSS_COMPILE_DIR)/$(CROSS_COMPILE)as 
 LD           = $(CROSS_COMPILE_DIR)/$(CROSS_COMPILE)ld
