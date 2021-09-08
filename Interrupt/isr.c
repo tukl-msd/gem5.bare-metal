@@ -1,16 +1,14 @@
 #include <stdio.h>
 
+#include "timer.h"
+
 void isr(void)
 {
     //Timer BaseAddress
-#if GEM5_MACHINETYPE_VExpress_GEM5_V1
-    int *timer1 = (int*)0x2a820000; 
-#else
-    int *timer1 = (int*)0x10011000; 
-#endif
+    int *timer1 = (int*)TIMER_BASE; 
 
     //Clear Timer Interrupt Flag 
-    timer1[3] = 0xff;
+    timer1[CNTP_CTL] = 0x02;
 
     printf("***************** INTERRUPT!!! *************************\n");
 }

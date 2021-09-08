@@ -35,6 +35,10 @@
 
 #include <stdio.h>
 
+#include "timer.h"
+
+#define TIMER_VALUE 0x1000
+
 int main(void)
 {
     /* This example configures a timer instance to trigger a 
@@ -46,13 +50,9 @@ int main(void)
     unsigned int delay = 0;
     unsigned int counter = 0;
 
-#if GEM5_MACHINETYPE_VExpress_GEM5_V1
-    int *timer1 = (int*)0x2a820000;
-#else
-    int *timer1 = (int*)0x10011000; // Timer Base Address
-#endif
+    int *timer1 = (int*)TIMER_BASE;
 
-    *timer1 = 0x1000; // Timer StartValue
+    timer1[CNTP_TVAL] = TIMER_VALUE; // set start value
     
     printf("##################################################\n");
     printf("#################      Boot     ##################\n");
@@ -65,7 +65,8 @@ int main(void)
             delay++;
             if (delay == 5) {
                 printf("Start Timer Interrupts\n");
-                timer1[2] = 0xE0;   // Timer Start
+                timer1[CNTP_CTL] = 0x01;   // Timer Start
+                delay = 1;
             }
             printf("Delay: %u\n",delay);
         } else {
