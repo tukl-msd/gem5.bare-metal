@@ -50,18 +50,19 @@ _Reset:
 .equ Len_IRQ_Stack,    0x1000;  // 4kB of stack memory for IRQ Mode 
 //.equ stack_base,      0x18000   // stack_base defined in Linker Script
 
-//GIC_Distributor
-.equ GIC_Dist_Base,     0x1f001000
+//GIC Distributor & CPU interface
+//GEM5_MACHINETYPE=VExpress_GEM5_V1
+.equ GIC_Dist_Base,     0x2c001000
+.equ GIC_CPU_BASE,      0x2c002000
 
 //Register offsets
 .equ set_enable1,       0x104
 .equ set_enable2,       0x108
 
 //Example definitions
-.equ timer_irq_id,      36   // 36 <64 => set_enable1 Reg
+//GEM5_MACHINETYPE=VExpress_GEM5_V1
+.equ timer_irq_id,      57   // 57 <64 => set_enable1 Reg
 
-//GIC_CPU_INTERFACE
-.equ GIC_CPU_BASE,                  0x1f000100
 .equ GIC_CPU_mask_reg_offset,       0x04
 .equ GIC_CPU_Int_Ack_reg_offset,    0x0C
 .equ GIC_CPU_End_of_int_offset,     0x10
@@ -113,9 +114,9 @@ config_gic_dist:
 
     ldr r1, =GIC_Dist_Base + set_enable1    // r1 = Set-enable1 Reg Address
     mov r2, #1
-    //IRQ ID - 32 => 5th bit = 1
-    lsl r2, r2, #4
-
+    //GEM5_MACHINETYPE=VExpress_GEM5_V1
+    //IRQ ID(57) - 32 = 25
+    lsl r2, r2, #25
     ldr r3, [r1]    // read current register value
     orr r3, r3, r2  // set the enable bit
     str r3, [r1]    // store the new register value

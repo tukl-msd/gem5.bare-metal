@@ -19,46 +19,34 @@ or Homebrew:
     brew install gcc-arm-none-eabi
 ```
 
-on Linux based systems (e.g. Debian):
+on Linux based systems (e.g. Ubuntu/Debian):
 ``` bash
     apt-get install gcc-arm-none-eabi
 ```
 
 To compile the example software set a proper path to you bare metal toolchain
-in the Makefile.
+in common/Makefile, then run:
 
 ``` bash
+    cd Simple
     make
 ```
 
 To run the software in gem5 do the following steps:
 
 ``` bash
-    export M5_PATH="/path/to/gem5.bare-metal/"
-```   
-For the simple example:
-``` bash
-    ./build/ARM/gem5.opt \
-    ./configs/example/fs.py \
+    export GEM5_PATH="/path/to/gem5/repository"
+    export TEST_BIN_PATH="/path/to/gem5.bare-metal"
+
+    ${GEM5_PATH}/build/ARM/gem5.opt \
+    ${GEM5_PATH}/configs/example/fs.py \
     --bare-metal \
-    --disk-image=/path/to/gem5.bare-metal/common/fake.iso \
-    --kernel=/path/to/gem5.bare-metal/simple/main.elf \
-    --machine-type=RealView_PBX \
-    --dtb-filename=none \
-    --mem-size=256MB
+    --kernel=${TEST_BIN_PATH}/Simple/main.elf \
+    --machine-type=VExpress_GEM5_V1
 ```
 
-For the interrupt example:
-``` bash
-    ./build/ARM/gem5.opt \
-    ./configs/example/fs.py \
-    --bare-metal \
-    --disk-image=/path/to/gem5.bare-metal/common/fake.iso \
-    --kernel=/path/to/gem5.bare-metal/interrupt/main.elf \
-    --machine-type=RealView_PBX \
-    --dtb-filename=none \
-    --mem-size=256MB
-```
+*Note1: To build and run the interrupt example, simply repeat the steps above replacing "Simple" by "Interrupt".
+*Note2: tested with gem5 v21.0.0.0 and v21.1.0.0.
 
 Licence
 =======
